@@ -99,14 +99,33 @@ def p(bits: str) -> str:
 
 
 def l(bits: str) -> str:
-    for i in A:
-        try:
-            a = mod_f_16_in_b(i)
-            print(a)
-        except ValueError:
-            print(i)
+    bit_a = [mod_f_16_in_b(i) for i in A]
+    vec_matrix = []
+    for i in range(0, len(bits), 64):
+        vec_matrix.append(bits[i:i+64])
+
+    length = 64
+    new_vec_matrix = [[0 for i in range(length)] for i in range(len(vec_matrix))]
+    for i in range(len(vec_matrix)):
+        for j in range(length):
+            for k in range(length):
+
+                mul = int(vec_matrix[i][k]) * int(bit_a[k][j])
+                if new_vec_matrix[i][j] == 1 and mul == 1:
+                    new_vec_matrix[i][j] = 0
+                else:
+                    new_vec_matrix[i][j] += mul
+
+                if k == length - 1:
+                    new_vec_matrix[i][j] = str(new_vec_matrix[i][j])
+
+    for i in range(len(new_vec_matrix)):
+        new_vec_matrix[i] = ''.join(new_vec_matrix[i])
+
+    return ''.join(new_vec_matrix)
 
 
 if __name__ == '__main__':
-    l('01')
-    # print(mod_f_16_in_b(A[6]))
+    S = s('0' * 512)
+    P = p(S)
+    l(P)
