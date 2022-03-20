@@ -14,13 +14,13 @@ PI = (252, 238, 221, 17, 207, 110, 49, 22, 251, 196, 250, 218, 35, 197, 4, 77, 2
       192, 209, 102, 175, 194, 57, 75, 99, 182)
 
 
-R = (0, 8, 16, 24, 32, 40, 48, 56, 1,9, 17, 25, 33, 41, 49, 57, 2, 10, 18, 26, 34, 42, 50, 58, 3, 11, 19, 27, 35, 43,
+R = (0, 8, 16, 24, 32, 40, 48, 56, 1, 9, 17, 25, 33, 41, 49, 57, 2, 10, 18, 26, 34, 42, 50, 58, 3, 11, 19, 27, 35, 43,
      51, 59, 4, 12, 20, 28, 36, 44, 52, 60, 5, 13, 21, 29, 37, 45, 53, 61, 6, 14, 22, 30, 38, 46, 54, 62, 7, 15, 23, 31,
      39, 47, 55, 63)
 
 
 A = ('8e20faa72ba0b470', '47107ddd9b505a38', 'ad08b0e0c3282d1c', 'd8045870ef14980e', '6c022c38f90a4c07',
-     '3601161cf205268d', '1b8e0b0e798c13c8', '83478b07b2468764', 'a0116380818e8f40', '5086e740ce47c920',
+     '3601161cf205268d', '1b8e0b0e798c13c8', '83478b07b2468764', 'a011d380818e8f40', '5086e740ce47c920',
      '2843fd2067adea10', '14aff010bdd87508', '0ad97808d06cb404', '05e23c0468365a02', '8c711e02341b2d01',
      '46b60f011a83988e', '90dab52a387ae76f', '486dd4151c3dfdb9', '24b86a840e90f0d2', '125c354207487869',
      '092e94218d243cba', '8a174a9ec8121e5d', '4585254f64090fa0', 'accc9ca9328a8950', '9d4df05d5f661451',
@@ -32,6 +32,32 @@ A = ('8e20faa72ba0b470', '47107ddd9b505a38', 'ad08b0e0c3282d1c', 'd8045870ef1498
      '39b008152acb8227', '9258048415eb419d', '492c024284fbaec0', 'aa16012142f35760', '550b8e9e21f7a530',
      'a48b474f9ef5dc18', '70a6a56e2440598e', '3853dc371220a247', '1ca76e95091051ad', '0edd37c48a08a6d8',
      '07e095624504536c', '8d70c431ac02a736', 'c83862965601dd1b', '641c314b2b8ee083')
+
+
+C = ('b1085bda1ecadae9ebcb2f81c0657c1f2f6a76432e45d016714eb88d7585c4fc'
+     '4b7ce09192676901a2422a08a460d31505767436cc744d23dd806559f2a64507',
+     '6fa3b58aa99d2f1a4fe39d460f70b5d7f3feea720a232b9861d55e0f16b50131'
+     '9ab5176b12d699585cb561c2db0aa7ca55dda21bd7cbcd56e679047021b19bb7',
+     'f574dcac2bce2fc70a39fc286a3d843506f15e5f529c1f8bf2ea7514b1297b7b'
+     'd3e20fe490359eb1c1c93a376062db09c2b6f443867adb31991e96f50aba0ab2',
+     'ef1fdfb3e81566d2f948e1a05d71e4dd488e857e335c3c7d9d721cad685e353f'
+     'a9d72c82ed03d675d8b71333935203be3453eaa193e837f1220cbebc84e3d12e',
+     '4bea6bacad4747999a3f410c6ca923637f151c1f1686104a359e35d7800fffbd'
+     'bfcd1747253af5a3dfff00b723271a167a56a27ea9ea63f5601758fd7c6cfe57',
+     'ae4faeae1d3ad3d96fa4c33b7a3039c02d66c4f95142a46c187f9ab49af08ec6'
+     'cffaa6b71c9ab7b40af21f66c2bec6b6bf71c57236904f35fa68407a46647d6e',
+     'f4c70e16eeaac5ec51ac86febf240954399ec6c7e6bf87c9d3473e33197a93c9'
+     '0992abc52d822c3706476983284a05043517454ca23c4af38886564d3a14d493',
+     '9b1f5b424d93c9a703e7aa020c6e41414eb7f8719c36de1e89b4443b4ddbc49a'
+     'f4892bcb929b069069d18d2bd1a5c42f36acc2355951a8d9a47f0dd4bf02e71e',
+     '378f5a541631229b944c9ad8ec165fde3a7d3a1b258942243cd955b7e00d0984'
+     '800a440bdbb2ceb17b2b8a9aa6079c540e38dc92cb1f2a607261445183235adb',
+     'abbedea680056f52382ae548b2e4f3f38941e71cff8a78db1fffe18a1b336103'
+     '9fe76702af69334b7a1e6c303b7652f43698fad1153bb6c374b4c7fb98459ced',
+     '7bcd9ed0efc889fb3002c6cd635afe94d8fa6bbbebab07612001802114846679'
+     '8a1d71efea48b9caefbacd1d7d476e98dea2594ac06fd85d6bcaa4cd81f32d1b',
+     '378ee767f11631bad21380b00449b17acda43c32bcdf1d77f82012d430219f9b'
+     '5d80ef9d1891cc86e71da4aa88e12852faf417d5d9b21b9948bc924af11bd720')
 
 
 def mod_f_d_in_bit(num: int) -> str:
@@ -105,19 +131,13 @@ def l(bits: str) -> str:
         vec_matrix.append(bits[i:i+64])
 
     length = 64
-    new_vec_matrix = [[0 for i in range(length)] for i in range(len(vec_matrix))]
+    new_vec_matrix = [[0 for _ in range(length)] for _ in range(len(vec_matrix))]
     for i in range(len(vec_matrix)):
         for j in range(length):
             for k in range(length):
-
-                mul = int(vec_matrix[i][k]) * int(bit_a[k][j])
-                if new_vec_matrix[i][j] == 1 and mul == 1:
-                    new_vec_matrix[i][j] = 0
-                else:
-                    new_vec_matrix[i][j] += mul
-
+                new_vec_matrix[i][j] += int(vec_matrix[i][k]) * int(bit_a[k][j])
                 if k == length - 1:
-                    new_vec_matrix[i][j] = str(new_vec_matrix[i][j])
+                    new_vec_matrix[i][j] = str(new_vec_matrix[i][j] % 2)
 
     for i in range(len(new_vec_matrix)):
         new_vec_matrix[i] = ''.join(new_vec_matrix[i])
@@ -125,7 +145,26 @@ def l(bits: str) -> str:
     return ''.join(new_vec_matrix)
 
 
+def x(k: str, m: str) -> str:
+    xk = [str((int(k[i]) + int(m[i])) % 2) for i in range(len(k))]
+    return ''.join(xk)
+
+
+def e(k, m):
+    for i in range(len(C) + 1):
+        if i == len(C):
+            m = x(k, m)
+        else:
+            m = l(p(s(x(k, m))))
+            k = l(p(s(x(k, mod_f_16_in_b(C[i])))))
+        print('k = ', mod_f_b_in_16(k))
+        print('m = ', mod_f_b_in_16(m))
+
+
 if __name__ == '__main__':
     S = s('0' * 512)
     P = p(S)
-    l(P)
+    k = l(P)
+    m_int = '01323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
+
+    e(k, mod_f_16_in_b(m_int))
