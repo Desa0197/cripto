@@ -157,14 +157,15 @@ def e(k, m):
         else:
             m = l(p(s(x(k, m))))
             k = l(p(s(x(k, mod_f_16_in_b(C[i])))))
-        print('k = ', mod_f_b_in_16(k))
-        print('m = ', mod_f_b_in_16(m))
+    return m
+
+
+def g(n, h, m):
+    k = l(p(s(x(h, n))))
+    res_g = x(x(e(k, m), h), m)
+    return res_g
 
 
 if __name__ == '__main__':
-    S = s('0' * 512)
-    P = p(S)
-    k = l(P)
     m_int = '01323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
 
-    e(k, mod_f_16_in_b(m_int))
