@@ -60,9 +60,11 @@ C = ('b1085bda1ecadae9ebcb2f81c0657c1f2f6a76432e45d016714eb88d7585c4fc'
      '5d80ef9d1891cc86e71da4aa88e12852faf417d5d9b21b9948bc924af11bd720')
 
 
-def mod_f_d_in_bit(num: int) -> str:
-    if num == 0:
-        return '0' * 8
+def mod_f_d_in_bit(num: int, n) -> str:
+    if num == 0 and n != 0:
+        return '0' * n
+    elif num == 0:
+        return '0'
 
     rev_bit_num = []
     while num != 0:
@@ -70,8 +72,11 @@ def mod_f_d_in_bit(num: int) -> str:
         num //= 2
         rev_bit_num.append(str(m))
 
-    zero_list = ['0' for _ in range(8 - len(rev_bit_num))]
+    zero_list = ['0' for _ in range(n - len(rev_bit_num))]
     rev_bit_num += zero_list
+
+    if n != 0:
+        rev_bit_num = rev_bit_num[:n]
 
     rev_bit_num.reverse()
     bit_num = ''.join(rev_bit_num)
@@ -89,7 +94,7 @@ def mod_f_b_in_16(bit: str) -> str:
 def mod_f_16_in_b(str16: str) -> str:
     str_bit = ''
     for i in str16:
-        str_bit += mod_f_d_in_bit(TUP_16.index(i))[4:]
+        str_bit += mod_f_d_in_bit(TUP_16.index(i), 4)
     return str_bit
 
 
@@ -106,7 +111,7 @@ def s(bits: str) -> str:
         byte = bits[i:i+8]
         num = mod_f_b_in_decimal(byte)
         pi_num = PI[num]
-        s_string += mod_f_d_in_bit(pi_num)
+        s_string += mod_f_d_in_bit(pi_num, 8)
 
     return s_string
 
@@ -150,7 +155,7 @@ def x(k: str, m: str) -> str:
     return ''.join(xk)
 
 
-def e(k, m):
+def e(k: str, m: str) -> str:
     for i in range(len(C) + 1):
         if i == len(C):
             m = x(k, m)
@@ -160,12 +165,64 @@ def e(k, m):
     return m
 
 
-def g(n, h, m):
+def g(n: str, h: str, m: str) -> str:
     k = l(p(s(x(h, n))))
     res_g = x(x(e(k, m), h), m)
     return res_g
 
 
-if __name__ == '__main__':
-    m_int = '01323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
+def stribog(m: str, key: str) -> str:
+    if key == '1':
+        IV = '0' * 512
+    else:
+        IV = '00000001' * 64
 
+    h, n, z = IV, '0' * 512, '0' * 512
+
+    m = mod_f_16_in_b(m)
+    while True:
+        length_m = len(m)
+        if length_m < 512:
+            m = '0' * (511 - len(m)) + '1' + m
+            break
+        else:
+            m1, m = m[:length_m - 512], m[-512:]
+            h = g(n, h, m)
+            n = mod_f_d_in_bit(mod_f_b_in_decimal(n) + 512, 512)
+            z = mod_f_d_in_bit(mod_f_b_in_decimal(z) + mod_f_b_in_decimal(m), 512)
+            m = m1
+
+    h = g(n, h, m)
+    n = mod_f_d_in_bit(mod_f_b_in_decimal(n) + length_m, 512)
+    z = mod_f_d_in_bit(mod_f_b_in_decimal(z) + mod_f_b_in_decimal(m), 512)
+    h = g('0' * 512, h, n)
+    h = g('0' * 512, h, z)
+    if key == '1':
+        return h
+    else:
+        return h[:256]
+
+
+def menu():
+    print('Что будем кодировать?\n'
+          '\t1) Сообщение из консоли\n'
+          '\t2) Сообщение из файла')
+    message_key = input()
+
+    if message_key == '1':
+        message = input('Введите соощение: ')
+    else:
+        path = input('Введите имя файла: ')
+        with open(f'{path}.txt', 'r', encoding='unicode') as file:
+            message = file.read()
+
+    key = input('Выберите желаемую длину свертка:\n'
+                '\t1) 512;\n'
+                '\t2) 256\n')
+
+    print(mod_f_b_in_16(stribog(message, key)))
+
+
+if __name__ == '__main__':
+    menu()
+    # '323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
