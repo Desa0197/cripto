@@ -213,10 +213,10 @@ def menu():
         message = input('Введите соощение: ')
     else:
         path = input('Введите имя файла: ')
-        with open(f'{path}.txt', 'r', encoding='unicode') as file:
+        with open(f'{path}.txt', 'r', encoding='utf-8') as file:
             message = file.read()
 
-    key = input('Выберите желаемую длину свертка:\n'
+    key = input('Выберите желаемую длину)свертка:\n'
                 '\t1) 512;\n'
                 '\t2) 256\n')
 
@@ -224,5 +224,7 @@ def menu():
 
 
 if __name__ == '__main__':
-    menu()
+    # menu()
     # '323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
+    a = ord('c')
+    print(mod_f_b_in_16(mod_f_d_in_bit(a)))

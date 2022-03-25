@@ -60,7 +60,9 @@ def cod_base64(message):
     base64_message = ''
     for i in bit_base64_message:
         base64_message += tup_base64[mod_in_decimal(i)]
-    base64_message += len(zero_list) // 8 * '='
+    count_equels = len(zero_list) // 8
+    base64_message = base64_message[:-count_equels]
+    base64_message += count_equels * '='
     return base64_message
 
 
@@ -72,7 +74,7 @@ def decod_base64(cod_message: str):
         base64_message.append(mod_in_bit(index)[2:])
 
     ascii_line_message = ''.join(base64_message)
-    ascii_line_message = ascii_line_message[:len(ascii_line_message) - 8 * count_equal]
+    ascii_line_message = ascii_line_message[:-2 * count_equal]
 
     bit_ascii_message = []
     for i in range(0, len(ascii_line_message), 8):
@@ -84,6 +86,7 @@ def decod_base64(cod_message: str):
         decod_message += tup_ascii[mod_in_decimal(i) - 32]
 
     return decod_message
+
 
 def cod_base32(message):
     ascii_message = []
@@ -119,8 +122,6 @@ def cod_base32(message):
 
 
 def decod_base32(cod_message: str):
-
-
     count_equal = cod_message.count('=')
     base32_message = []
     for i in cod_message[:len(cod_message) - count_equal]:
