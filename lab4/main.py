@@ -60,6 +60,16 @@ C = ('b1085bda1ecadae9ebcb2f81c0657c1f2f6a76432e45d016714eb88d7585c4fc'
      '5d80ef9d1891cc86e71da4aa88e12852faf417d5d9b21b9948bc924af11bd720')
 
 
+def mod_text_in_bit(text: str) -> str:
+    text_bit = ''
+    for i in text:
+        bit_sym = mod_f_d_in_bit(ord(i), 16)
+        count_zero = len(bit_sym) % 4
+        bit_sym = '0' * count_zero + bit_sym
+        text_bit += bit_sym
+    return text_bit
+
+
 def mod_f_d_in_bit(num: int, n) -> str:
     if num == 0 and n != 0:
         return '0' * n
@@ -179,7 +189,6 @@ def stribog(m: str, key: str) -> str:
 
     h, n, z = IV, '0' * 512, '0' * 512
 
-    m = mod_f_16_in_b(m)
     while True:
         length_m = len(m)
         if length_m < 512:
@@ -220,11 +229,11 @@ def menu():
                 '\t1) 512;\n'
                 '\t2) 256\n')
 
+    message = mod_text_in_bit(message)
+
     print(mod_f_b_in_16(stribog(message, key)))
 
 
 if __name__ == '__main__':
     menu()
     # '323130393837363534333231303938373635343332313039383736353433323130393837363534333231303938373635343332313039383736353433323130'
-    # a = ord('c')
-    # print(mod_f_b_in_16(mod_f_d_in_bit(a)))
