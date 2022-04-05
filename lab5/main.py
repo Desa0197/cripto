@@ -1,6 +1,9 @@
 import json
 
 
+TUP_16 = ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f')
+
+
 class BitString:
     def __init__(self, value: str):
         self.bits = value
@@ -88,6 +91,13 @@ class BitString:
         bit_num = ''.join(rev_bit_num)
         return BitString(bit_num)
 
+    @staticmethod
+    def mod_f_16_in_b(str16: str):
+        str_bit = BitString.mod_f_d_in_bit(TUP_16.index(str16[0]), 4)
+        for i in range(1, len(str16)):
+            str_bit = str_bit // BitString.mod_f_d_in_bit(TUP_16.index(i), 4)
+        return str_bit
+
 
 def addition_message(mes: BitString) -> BitString:
     length = len(mes)
@@ -100,7 +110,43 @@ def addition_message(mes: BitString) -> BitString:
 
 
 def split_message(mes: BitString) -> list[list[BitString]]:
-    pass
+    blocks512 = mes.split(512)
+    blocks512_32 = []
+    for i in blocks512:
+        blocks512_32.append(i.split(32))
+
+    return blocks512_32
+
+
+def create_w64(block512_32: list[BitString]) -> list[BitString]:
+    list_w64 = block512_32
+
+    for i in range(16, 64):
+        w = (list_w64[i - 16].mod_f_b_in_decimal() + sigma0(list_w64[i - 15]).mod_f_b_in_decimal() +
+             list_w64[i - 7].mod_f_b_in_decimal() + sigma1(list_w64[i - 2]).mod_f_b_in_decimal()) % 2 ** 32
+        list_w64.append(BitString.mod_f_d_in_bit(w, 32))
+
+    return list_w64
+
+
+def compression(list_w64, list_h: list[BitString], list_k):
+    tc = list_h
+    for i in len(list_w64):
+        temp1 = BitString((tc[7].mod_f_b_in_decimal() + s1(tc[4]).mod_f_b_in_decimal() + ch(tc[4], tc[5], tc[6]).mod_f_b_in_decimal() + list_w64[i].mod_f_b_in_decimal() + list_k[i]) % 2 ** 32)
+        temp2 = BitString((s0(tc[0]) + maj(tc[0], tc[1], tc[2])) % 2 ** 32)
+        tc[7] = BitString(tc[6])
+        tc[6] = BitString(tc[5])
+        tc[5] = BitString(tc[4])
+        tc[4] = BitString((tc[3].mod_f_b_in_decimal() + temp1.mod_f_b_in_decimal()) % 2 ** 32)
+        tc[3] = BitString(tc[2])
+        tc[2] = BitString(tc[1])
+        tc[1] = BitString(tc[0])
+        tc[0] = BitString((temp1.mod_f_b_in_decimal() + temp2.mod_f_b_in_decimal()) % 2 ** 32)
+
+    for i in range(len(list_h)):
+        list_h[i] = BitString((list_h[i].mod_f_b_in_decimal() + tc[i].mod_f_b_in_decimal()) % 2 ** 32)
+
+    return list_h
 
 
 def ch(x: BitString, y: BitString, z: BitString) -> BitString:
@@ -125,6 +171,25 @@ def sigma0(x: BitString) -> BitString:
 
 def sigma1(x: BitString) -> BitString:
     return x.csr(17) + x.csr(19) + x.sr(10)
+
+
+def sha256(mes: BitString):
+    add_mes = addition_message(mes) # дополняем сообщение
+    blocks512_32 = split_message(add_mes) # делим на блоки по 512 / 32
+
+    with open('const256.json', 'r') as file:
+        dict_consts = json.load(file)
+
+    list_k = []
+    list_h = []
+    for i in dict_consts['k']:
+        list_k.append(BitString.mod_f_16_in_b(i))
+    for i in dict_consts['h']:
+        list_h.append(BitString.mod_f_16_in_b(i))
+
+    for i in blocks512_32:
+        list_w64 = create_w64(i)
+        list_h = compression(list_w64, list_h, list_k)
 
 
 if __name__ == '__main__':
