@@ -61,13 +61,14 @@ C = ('b1085bda1ecadae9ebcb2f81c0657c1f2f6a76432e45d016714eb88d7585c4fc'
 
 
 def mod_text_in_bit(text: str) -> str:
-    text_bit = ''
-    for i in text:
-        bit_sym = mod_f_d_in_bit(ord(i), 16)
-        count_zero = len(bit_sym) % 4
-        bit_sym = '0' * count_zero + bit_sym
-        text_bit += bit_sym
-    return text_bit
+    bit_text = ''
+
+    encode_text = text.encode('utf-8')
+
+    for i in range(len(encode_text)):
+        bit_text = bit_text + '0' * (8 - len(format(encode_text[i], 'b'))) + format(encode_text[i], 'b')
+
+    return bit_text
 
 
 def mod_f_d_in_bit(num: int, n) -> str:
