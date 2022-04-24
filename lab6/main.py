@@ -2,13 +2,13 @@ from stribog import stribog, x
 from sha import sha256, sha512
 
 from BitString import BitString
+from random import randint
 from pmf import pmf
-
 
 size_block_for_h = {
     stribog: 512,
-    sha256: 256,
-    sha512: 512
+    sha256: 512,
+    sha512: 1024
 }
 
 
@@ -28,12 +28,31 @@ def hcam_stribog(key, message, func, func_key):
     return func(x(key, opad) + func(x(key, ipad) + message, func_key), func_key)
 
 
-def gen_key(func) -> BitString:
-    key = BitString.mod_f_d_in_bit(pmf(100, 100), 0)
+def gen_key() -> BitString:
+    key = BitString.mod_f_d_in_bit(pmf(randint(100, 300), 100), 0)
+
+    return key
+
+
+def format_key(key, func):
     zero_bit = BitString('0' * (size_block_for_h[func] - len(key)))
     key //= zero_bit
 
     return key
+
+
+def get_key():
+    name = input('\nВведите имя файла: ')
+    with open(f'{name}.key', 'r') as file:
+        key = file.read()
+
+    return BitString(key)
+
+
+def save_key(key):
+    name = input('\nВведите имя файла: ')
+    with open(f'{name}.key', 'w') as file:
+        file.write(key)
 
 
 def menu():
@@ -55,20 +74,33 @@ def menu():
                      '\t3) Stribog-512;\n'
                      '\t4) Stribog-256\n')
 
-    message = BitString.mod_text_in_bit(message).bits
+    menu_for_key = input('\nВыберите ключ:\n'
+                         '\t1) Создать ключ;\n'
+                         '\t2) Воспользоваться имеющимся\n')
+
+    key = ''
+    if menu_for_key == '1':
+        key = gen_key()
+        save_key(key.bits)
+    elif menu_for_key == '2':
+        key = get_key()
+
+    message = BitString.mod_text_in_bit(message)
 
     if key_menu == '1':
-        key = gen_key(sha512)
+        key = format_key(key, sha512)
         print(hcam_sha(key, message, sha512).mod_f_b_in_16())
     elif key_menu == '2':
-        key = gen_key(sha256)
+        key = format_key(key, sha256)
         print(hcam_sha(key, message, sha256).mod_f_b_in_16())
     elif key_menu == '3':
-        key = gen_key(stribog)
-        print(BitString(hcam_stribog(key.bits, message, stribog, 1)).mod_f_b_in_16())
+        key = format_key(key, stribog)
+        message = message.bits
+        print(BitString(hcam_stribog(key.bits, message, stribog, '1')).mod_f_b_in_16())
     elif key_menu == '4':
-        key = gen_key(stribog)
-        print(BitString(hcam_stribog(key.bits, message, stribog, 2)).mod_f_b_in_16())
+        key = format_key(key, stribog)
+        message = message.bits
+        print(BitString(hcam_stribog(key.bits, message, stribog, '2')).mod_f_b_in_16())
 
 
 if __name__ == '__main__':
